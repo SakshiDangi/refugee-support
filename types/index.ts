@@ -12,7 +12,7 @@ export interface Job {
   type: string;
   description: string;
   requirements: string[];
-  salary: string;
+  salary: [number, number];
   postedDate: string;
 };
 
