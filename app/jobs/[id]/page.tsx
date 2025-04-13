@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Job } from '@/types';
-import { DateFormatter } from '@/components/date-formatter';
 
 export default function JobDetailsPage() {
   const { id } = useParams();
