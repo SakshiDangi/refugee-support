@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { Job } from '@/types/job';
 
 const jobs: Job[] = [
@@ -150,6 +150,7 @@ const jobs: Job[] = [
 
 
 export async function GET(
+  _request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -163,6 +164,7 @@ export async function GET(
     }
 
     return NextResponse.json(job);
+    
   } catch (_error) {
     console.error('Error fetching job:', _error);
     return NextResponse.json(
