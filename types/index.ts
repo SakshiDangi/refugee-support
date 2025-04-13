@@ -1,15 +1,15 @@
-// API Response Schema
 export type ApiResponse<T> = 
   | { data: T; error?: never }
   | { data?: never; error: string };
 
 // Domain Models
-export interface Job {
+export type Job = {
+  salaryRange: any;
   id: string;
   title: string;
   company: string;
   location: string;
-  type: string;
+  type: 'FULL_TIME' | 'PART_TIME' | 'CONTRACT' | 'INTERNSHIP';
   description: string;
   requirements: string[];
   salary: [number, number];
