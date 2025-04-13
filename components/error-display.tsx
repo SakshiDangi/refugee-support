@@ -1,7 +1,11 @@
-import React from 'react'
+interface ErrorDisplayProps {
+  message: string;
+}
 
-export default function ErrorDisplay() {
+export default function ErrorDisplay({ message }: ErrorDisplayProps) {
   return (
-    <div>error-display</div>
-  )
+    <div className="text-red-500">
+      {message}
+    </div>
+  );
 }

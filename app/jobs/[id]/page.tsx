@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { Job } from '@/types/job';
 import LoadingSpinner from '@/components/load-spinner';
 import Link from 'next/link';
+import ErrorDisplay from '@/components/error-display';
 
 export default function JobDetailsPage() {
   const { id } = useParams();
@@ -15,7 +16,7 @@ export default function JobDetailsPage() {
   const [error, setError] = useState<string | null>(null);
   const [recLoading, setRecLoading] = useState(true);
 
-  // Fetch main job data
+  // Fetch job data
   useEffect(() => {
     const fetchJob = async () => {
       try {
@@ -28,8 +29,8 @@ export default function JobDetailsPage() {
 
         const data: Job = await response.json();
         setJob(data);
-      } catch (_err) {
-        setError(_err instanceof Error ? _err.message : 'Failed to load job');
+      } catch (_error) {
+        setError(_error instanceof Error ? _error.message : 'Failed to load job');
         router.push('/jobs');
       } finally {
         setLoading(false);
@@ -56,8 +57,8 @@ export default function JobDetailsPage() {
         ).slice(0, 4); // Get top 4 matches
 
         setRecommendations(similarJobs);
-      } catch (_err) {
-        console.error('Recommendation error:', _err);
+      } catch (_error) {
+        console.error('Recommendation error:', _error);
       } finally {
         setRecLoading(false);
       }
@@ -67,7 +68,7 @@ export default function JobDetailsPage() {
   }, [job]);
 
   if (loading) return <LoadingSpinner />;
-  // if (error) return <ErrorDisplay message={error} />;
+  if (error) return <ErrorDisplay message={error} />;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
