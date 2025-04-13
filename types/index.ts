@@ -4,18 +4,18 @@ export type ApiResponse<T> =
   | { data?: never; error: string };
 
 // Domain Models
-export type Job = {
+export interface Job {
   id: string;
   title: string;
   company: string;
   location: string;
-  type: 'FULL_TIME' | 'PART_TIME' | 'CONTRACT' | 'INTERNSHIP';
+  type: string;
   description: string;
   requirements: string[];
-  salaryRange: [number, number];
-  postedDate: Date;
-  applicationUrl?: string;
+  salary: string;
+  postedDate: string;
 };
+
 
 export type ChatMessage = {
   id: string;

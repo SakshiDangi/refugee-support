@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import jobData from '@/data/jobs.json';
+import { Job } from '@/types';
 
 export default function JobDetailsPage() {
   const params = useParams();
   const router = useRouter();
-  const [job, setJob] = useState<any>(null);
+  const [job, setJob] = useState<Job | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
