@@ -19,7 +19,7 @@ export default function JobDetailsPage() {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const response = await fetch(`/api/jobs/${id}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/jobs/${id}`);
         
         if (!response.ok) {
           const errorData = await response.json();

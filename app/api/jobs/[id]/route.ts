@@ -1,17 +1,5 @@
-import { NextResponse } from "next/server";
-
-interface Job {
-  id: string;
-  title: string;
-  company: string;
-  location: string;
-  type: string;
-  description: string;
-  requirements: string[];
-  salaryRange: [number, number];
-  postedDate: string;
-  skills: string[];
-}
+import { NextResponse } from 'next/server';
+import { Job } from '@/types/job';
 
 const jobs: Job[] = [
     {
@@ -160,29 +148,22 @@ const jobs: Job[] = [
   }
 ];
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
 
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
-    let filteredJobs = [...jobs];
+    const job = jobs.find(j => j.id === params.id);
 
-    // Filter by type
-    const type = searchParams.get('type');
-    if (type) {
-      filteredJobs = filteredJobs.filter(j => j.type === type);
+    if (!job) {
+      return NextResponse.json(
+        { error: 'Job not found' },
+        { status: 404 }
+      );
     }
 
-    // Exclude specific ID
-    const exclude = searchParams.get('exclude');
-    if (exclude) {
-      filteredJobs = filteredJobs.filter(j => j.id !== exclude);
-    }
-
-    // Limit results
-    const limit = searchParams.get('limit');
-    const finalJobs = limit ? filteredJobs.slice(0, Number(limit)) : filteredJobs;
-
-    return NextResponse.json(finalJobs);
+    return NextResponse.json(job);
   } catch (error) {
     return NextResponse.json(
       { error: 'Internal server error' },
