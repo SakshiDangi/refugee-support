@@ -151,14 +151,15 @@ const jobs: Job[] = [
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const job = jobs.find(j => j.id === params.id);
+    const { id } = context.params;
+    const job = jobs.find(j => j.id === id);
 
     if (!job) {
       return NextResponse.json(
-        { error: 'Job not found' },
+        { error: `Job with ID ${id} not found` },
         { status: 404 }
       );
     }
