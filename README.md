@@ -19,10 +19,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
 # refugee-support
-https://youtu.be/DU-VjefeqsA
+### **https://youtu.be/DU-VjefeqsA**
 
 ### **Inspiration**  
 Tahsin, a 22-year-old Rohingya refugee, fled Myanmar with his family, leaving behind everything he knew. Displaced and isolated, he struggled to access education but refused to give up. With sheer determination, Tahsin taught himself programming using borrowed devices and free online resources. Over time, he became a skilled developer and began mentoring others in his community, proving that technology could transform lives.
@@ -114,4 +112,4 @@ export async function POST(req: Request) {
 - **Predictive Analytics**: Integration with UNHCR’s ProGres v4 database  
 - **Hardware Kits**: Raspberry Pi mesh networks for offline sync  
 - **Education Portal**: Next.js 14’s Partial Prerendering for course modules  
-  [Presentation](presentation.pdf)
+  ### **[Presentation](presentation.pdf)**
