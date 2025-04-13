@@ -112,4 +112,4 @@ export async function POST(req: Request) {
 - **Predictive Analytics**: Integration with UNHCR’s ProGres v4 database  
 - **Hardware Kits**: Raspberry Pi mesh networks for offline sync  
 - **Education Portal**: Next.js 14’s Partial Prerendering for course modules  
-  ### **[Presentation](presentation.pdf)**
+  ### **[Presentation](https://github.com/SakshiDangi/refugee-support/blob/main/public/presentation.pdf)**
