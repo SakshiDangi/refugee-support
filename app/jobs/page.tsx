@@ -7,6 +7,7 @@ import { JobCard } from '@/components/job-card';
 import { JobFilter } from '@/components/job-filter';
 import { DateFormatter } from '@/components/date-formatter';
 import Link from 'next/link';
+import ErrorDisplay from '@/components/error-display';
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -25,8 +26,8 @@ export default function JobsPage() {
         
         setJobs(data);
         setFilteredJobs(data);
-      } catch (_err) {
-        setError(_err instanceof Error ? _err.message : 'Failed to load jobs');
+      } catch (_error) {
+        setError(_error instanceof Error ? _error.message : 'Failed to load jobs');
       } finally {
         setLoading(false);
       }
@@ -48,7 +49,7 @@ export default function JobsPage() {
   };
 
   if (loading) return <LoadingSpinner />;
-  // if (error) return <ErrorDisplay message={error} />;
+  if (error) return <ErrorDisplay message={error} />;
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-8">

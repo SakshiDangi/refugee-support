@@ -183,9 +183,9 @@ export async function GET(request: Request) {
     const finalJobs = limit ? filteredJobs.slice(0, Number(limit)) : filteredJobs;
 
     return NextResponse.json(finalJobs);
-  } catch (_error) {
+  } catch (error) {
     return NextResponse.json(
-      { _error: 'Internal server error' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
