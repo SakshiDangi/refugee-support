@@ -1,3 +1,7 @@
+## Refugees Connect & Grow Together
+![alt text](<iframe width="768" height="432" src="https://miro.com/app/live-embed/uXjVIDMiMSo=/?moveToViewport=633,-276,2457,1124&embedId=229662854369" frameborder="0" scrolling="no" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe>)
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
