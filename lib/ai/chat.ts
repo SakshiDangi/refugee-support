@@ -2,7 +2,7 @@
 import { createOpenAI } from '@ai-sdk/openai';
 import { streamText } from 'ai';
 import { APP_CONFIG } from '@/config/constants';
-import type { ChatMessage } from '@/types';
+import type { ChatMessage } from '@/types/job';
 
 export class ChatService {
   private readonly client: ReturnType<typeof createOpenAI>;

@@ -1,25 +1,32 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Job } from '@/types';
+import { Job } from '@/types/job';
+import LoadingSpinner from '@/components/load-spinner';
+import { JobCard } from '@/components/job-card';
+import { JobFilter } from '@/components/job-filter';
 import { DateFormatter } from '@/components/date-formatter';
+import Link from 'next/link';
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedType, setSelectedType] = useState('All');
+  const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const [error, setError] = useState<string | null>(null);
+  
   useEffect(() => {
-    // Load jobs data from the JSON file
     const fetchJobs = async () => {
       try {
-        const response = await fetch('/jobs.json'); // Fetch jobs.json file
-        const data: Job[] = await response.json();
+        const response = await fetch('/api/jobs');
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        
+        const data = await response.json();
+        if (!Array.isArray(data)) throw new Error('Invalid data format');
+        
         setJobs(data);
-      } catch (error) {
-        console.error('Failed to load jobs:', error);
+        setFilteredJobs(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load jobs');
       } finally {
         setLoading(false);
       }
@@ -28,77 +35,85 @@ export default function JobsPage() {
     fetchJobs();
   }, []);
 
-  const filteredJobs = jobs.filter(job => {
-    const matchesSearch =
-      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.location.toLowerCase().includes(searchTerm.toLowerCase());
+  const handleSearch = (searchTerm: string, jobType: string) => {
+    const filtered = jobs.filter(job => {
+      const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
+      
+      return jobType === 'All' ? matchesSearch : job.type === jobType;
+    });
+    
+    setFilteredJobs(filtered);
+  };
 
-    return selectedType === 'All' ? matchesSearch : matchesSearch && job.type === selectedType;
-  });
-
-  if (loading) {
-    return <div className="text-center p-8">Loading jobs...</div>;
-  }
+  if (loading) return <LoadingSpinner />;
+  // if (error) return <ErrorDisplay message={error} />;
 
   return (
-    <div className="max-w-5xl mx-auto p-4">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Job Board</h1>
-        <p className="text-gray-600">Find opportunities that match your skills</p>
-      </div>
+    <main className="max-w-7xl mx-auto px-4 py-8">
+      <section className="mb-12">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">Career Opportunities</h1>
+        <p className="text-lg text-gray-600">Find your next professional challenge</p>
+      </section>
 
-      <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-        <div className="flex flex-col md:flex-row gap-4">
-          <input
-            type="text"
-            placeholder="Search jobs..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-          />
-          <select
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="All">All Types</option>
-            <option value="FULL_TIME">Full Time</option>
-            <option value="PART_TIME">Part Time</option>
-            <option value="CONTRACT">Contract</option>
-          </select>
+      <JobFilter onSearch={handleSearch} />
+
+      <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {filteredJobs.map(job => (
+          <JobCard key={job.id} job={job} />
+        ))}
+      </section>
+
+      {filteredJobs.length === 0 && (
+        <div className="text-center py-12 bg-white rounded-xl shadow-lg">
+          <p className="text-gray-500">No positions match your current filters</p>
         </div>
-      </div>
+      )}
 
-      <div className="space-y-6">
-        {filteredJobs.map((job) => (
-          <div key={job.id} className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
-            <div className="flex flex-col md:flex-row justify-between md:items-center mb-4">
-              <h2 className="text-xl font-bold">{job.title}</h2>
-              <div className="flex items-center mt-2 md:mt-0">
-                <span className="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
-                  {job.type.replace('_', ' ')}
-                </span>
-                <span className="ml-2 text-sm text-gray-500">
-                  Posted on <DateFormatter isoDate={job.postedDate} />
-                </span>
-              </div>
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      <h1 className="text-4xl font-bold mb-8">Current Job Openings</h1>
+      
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {jobs.map(job => (
+          <div key={job.id} className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-xl font-bold mb-2">{job.title}</h2>
+            <p className="text-gray-600 mb-4">
+              {job.company} • {job.location}
+            </p>
+            <div className="mb-4">
+              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                {job.type.replace('_', ' ')}
+              </span>
+            </div>
+            <div className="text-green-600 font-medium mb-4">
+              ${job.salaryRange[0].toLocaleString()} - ${job.salaryRange[1].toLocaleString()}
             </div>
             <Link
               href={`/jobs/${job.id}`}
-              className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="text-blue-600 hover:underline"
             >
-              View Details
+              View Details →
             </Link>
+            <div className="mt-4 text-sm text-gray-500">
+              Posted: <DateFormatter isoDate={job.postedDate} />
+            </div>
           </div>
         ))}
-
-        {filteredJobs.length === 0 && (
-          <div className="text-center py-12 bg-white rounded-xl shadow-md">
-            <p className="text-gray-500">No jobs found matching your criteria</p>
-          </div>
-        )}
       </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    </main>
   );
 }
