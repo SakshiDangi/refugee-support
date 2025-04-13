@@ -164,7 +164,8 @@ export async function GET(
     }
 
     return NextResponse.json(job);
-  } catch (error) {
+  } catch (_error) {
+    console.error('Error fetching job:', _error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

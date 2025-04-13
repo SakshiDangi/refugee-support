@@ -25,8 +25,8 @@ export default function JobsPage() {
         
         setJobs(data);
         setFilteredJobs(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load jobs');
+      } catch (_err) {
+        setError(_err instanceof Error ? _err.message : 'Failed to load jobs');
       } finally {
         setLoading(false);
       }
@@ -102,18 +102,6 @@ export default function JobsPage() {
         ))}
       </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
     </main>
   );
 }

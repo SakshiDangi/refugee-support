@@ -28,8 +28,8 @@ export default function JobDetailsPage() {
 
         const data: Job = await response.json();
         setJob(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load job');
+      } catch (_err) {
+        setError(_err instanceof Error ? _err.message : 'Failed to load job');
         router.push('/jobs');
       } finally {
         setLoading(false);
@@ -56,8 +56,8 @@ export default function JobDetailsPage() {
         ).slice(0, 4); // Get top 4 matches
 
         setRecommendations(similarJobs);
-      } catch (err) {
-        console.error('Recommendation error:', err);
+      } catch (_err) {
+        console.error('Recommendation error:', _err);
       } finally {
         setRecLoading(false);
       }
